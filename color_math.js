@@ -2,8 +2,12 @@
  * Created by evoosa on 26/01/2019.
  */
 
+var max_color_diversity = 10;
+var max_cmy_val = 100;
+
+
 function rgb_to_cmy_single_value(value) {
-    return 100 - value / 2.55
+    return max_cmy_val - value / 2.55
 }
 
 function rgb_to_cmy(rgb_triplet) {
@@ -15,8 +19,7 @@ function rgb_to_cmy(rgb_triplet) {
 }
 
 function round_cmy_single_value(value) {
-    var diviser = 10;
-    return Math.round(value / diviser) * diviser
+    return Math.round(value / max_color_diversity) * max_color_diversity
 }
 
 function round_cmy_triplet(cmy_triplet) {
