@@ -4,12 +4,12 @@
 
 var max_color_diversity = 10;
 var max_cmy_val = 100;
-
+var rgb_cmy_convert_val = 2.55;
 
 function hexToRgb(hex) {
     // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
     var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+    hex = hex.replace(shorthandRegex, function (m, r, g, b) {
         return r + r + g + g + b + b;
     });
 
@@ -22,7 +22,7 @@ function hexToRgb(hex) {
 }
 
 function rgb_to_cmy_single_value(value) {
-    return max_cmy_val - value / 2.55
+    return max_cmy_val - value / rgb_cmy_convert_val
 }
 
 function rgb_to_cmy(rgb_triplet) {
@@ -50,4 +50,10 @@ function rgb_to_rounded_cmy(rgb_triplet) {
     return round_cmy_triplet(rgb_to_cmy(rgb_triplet))
 }
 
-//function cmy_to_rgb
+function cmy_to_rgb(cmy_triplet) {
+    return {
+        r: Math.round(rgb_cmy_convert_val * (max_cmy_val - cmy_triplet["c"])),
+        g: Math.round(rgb_cmy_convert_val * (max_cmy_val - cmy_triplet["m"])),
+        b: Math.round(rgb_cmy_convert_val * (max_cmy_val - cmy_triplet["y"]))
+    }
+}
