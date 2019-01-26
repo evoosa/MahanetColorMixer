@@ -5,6 +5,7 @@
 var max_color_diversity = 10;
 var max_cmy_val = 100;
 var rgb_cmy_convert_val = 2.55;
+var color_picker_id = "rgb";
 
 function hexToRgb(hex) {
     // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
@@ -19,6 +20,10 @@ function hexToRgb(hex) {
         g: parseInt(result[2], 16),
         b: parseInt(result[3], 16)
     } : null;
+}
+
+function rgbToHex(rgb_triplet) {
+    return "#" + ((1 << 24) + (rgb_triplet['r'] << 16) + (rgb_triplet['g'] << 8) + rgb_triplet['b']).toString(16).slice(1);
 }
 
 function rgb_to_cmy_single_value(value) {
@@ -46,7 +51,6 @@ function round_cmy_triplet(cmy_triplet) {
 }
 
 function rgb_to_rounded_cmy(rgb_triplet) {
-    console.log(round_cmy_triplet(rgb_to_cmy(rgb_triplet)));
     return round_cmy_triplet(rgb_to_cmy(rgb_triplet))
 }
 
@@ -56,4 +60,15 @@ function cmy_to_rgb(cmy_triplet) {
         g: Math.round(rgb_cmy_convert_val * (max_cmy_val - cmy_triplet["m"])),
         b: Math.round(rgb_cmy_convert_val * (max_cmy_val - cmy_triplet["y"]))
     }
+}
+
+function correct_picked_color(rgb_hex_val) {
+    // convert to a rounded CMY
+    rounded_cmy_triplet = rgb_to_rounded_cmy(hexToRgb(rgb_hex_val));
+    // convert back to RGB Hex code
+    rounded_rgb_hex = rgbToHex(cmy_to_rgb(rounded_cmy_triplet));
+    console.log(rgb_hex_val);
+    console.log(rounded_rgb_hex);
+    //document.getElementById(color_picker_id).value = rounded_rgb_hex;
+    document.getElementById("html").style = `background-color:${rounded_rgb_hex};`;
 }

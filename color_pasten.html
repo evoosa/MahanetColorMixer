@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html id="html" style="background-color:#000000;" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Color Picker</title>
     <script type="text/javascript" src="color_math.js"></script>
     <div>
-        <input type="color" id="rgb" onclick="rgb_to_rounded_cmy(hexToRgb(this.value))" value="#000000" style="width=100%;">
+        <input type="color" id="rgb" onclick="correct_picked_color(this.value)" value="#000000" style="width=400%;">
     </div>
 </head>
 <body>
