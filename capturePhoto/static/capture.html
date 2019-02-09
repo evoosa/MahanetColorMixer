@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<!--load CSS file-->
+    <link rel="stylesheet" type="text/css" href="static/capture.css"/>
+
+<!--get the user to upload a photo-->
+<!--only in IOS, android and linux he will be able to capture an image-->
+    <input type="file" accept="image/*" id="file-input" capture="user">
+
+<!--this <canvas> tag will be used to display the image if drawOnCanvas will be called on upload-->
+    <canvas></canvas>
+
+<!--load the JS code    -->
+    <script src="static/capture.js"></script>
+
+</body>
+</html>
