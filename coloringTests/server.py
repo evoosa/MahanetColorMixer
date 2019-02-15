@@ -5,9 +5,15 @@ import os
 
 STATIC_DIRNAME = "static"
 
-class GetColorPicker(tornado.web.RequestHandler):
+
+class GetColorFromScale(tornado.web.RequestHandler):
     def get(self):
-        self.render("{}/color_pasten.html".format(STATIC_DIRNAME))
+        self.render("{}/pick_color_from_scale.html".format(STATIC_DIRNAME))
+
+
+class GetColorFromImage(tornado.web.RequestHandler):
+    def get(self):
+        self.render("{}/pick_color_from_image.html".format(STATIC_DIRNAME))
 
 
 def make_app():
@@ -16,7 +22,8 @@ def make_app():
         "static_url_prefix": "/{}/".format(STATIC_DIRNAME),
     }
     return tornado.web.Application([
-        (r"/", GetColorPicker)], **settings)
+        (r"/scale", GetColorFromScale),
+        (r"/image", GetColorFromImage)], **settings)
 
 
 if __name__ == "__main__":
