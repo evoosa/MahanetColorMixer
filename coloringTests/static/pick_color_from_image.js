@@ -1,3 +1,17 @@
+// server values
+var port = "8888";
+var ip = "127.0.0.1";
+var ws_url = "send_rgb";
+
+function getWebSocket(ip, port, ws_url) {
+    var url = `ws://${ip}:${port}/${ws_url}`;
+    Socket = new WebSocket(url);
+    Socket.onopen = function () {
+        console.log(`opened WS`);
+    };
+    return Socket;
+}
+
 // create the canvas element, and get it's context
 var c = document.getElementById("my_canvas");
 var ctx = c.getContext("2d");
@@ -21,15 +35,21 @@ function readURL(input) {
     }
 }
 
-$("#imgInp").change(function () {
+$("#image_input").change(function () {
     // get the image's URL
     readURL(this);
+    // open a WS to the server
+    var Socket = getWebSocket(ip, port, ws_url);
+
     $(function () {
         // function to display the picked color, when the image is clicked
         $('body').on('click', 'img', function () {
-            var picked_color = document.getElementById("picked_color");
-            picked_color.innerHTML = 'Picked Color: rgba(' + pixelData[0] + ', ' + pixelData[1] + ', ' + pixelData[2] + ', ' + pixelData[3] + ')';
-            // TODO - send it to the server!!! prompt first?!
+            var picked_rgb = pixelData[0] + ',' + pixelData[1] + ',' + pixelData[2];
+            var picked_color_element = document.getElementById("picked_color");
+            picked_color_element.innerHTML = 'Picked Color: rgb(' + picked_rgb + ')';
+
+            // onclick, send the RGB values to the server, using a WS
+            Socket.send(picked_rgb);
         });
 
         // function to display the color the mouse hovers above
@@ -50,12 +70,12 @@ $("#imgInp").change(function () {
             var c = document.getElementById("my_canvas");
             var ctx = c.getContext("2d");
 
-            ctx.fillStyle = 'rgba(' + pixelData[0] + ', ' + pixelData[1] + ', ' + pixelData[2] + ', ' + pixelData[3] + ')';
+            ctx.fillStyle = 'rgb(' + pixelData[0] + ', ' + pixelData[1] + ', ' + pixelData[2] + ')';
             ctx.fill();
 
             var current_color = document.getElementById("current_color");
 
-            current_color.innerHTML = 'Current Color: rgba(' + pixelData[0] + ', ' + pixelData[1] + ', ' + pixelData[2] + ', ' + pixelData[3] + ')';
+            current_color.innerHTML = 'Current Color: rgb(' + pixelData[0] + ', ' + pixelData[1] + ', ' + pixelData[2] + ')';
 
         });
 
