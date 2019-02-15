@@ -5,16 +5,20 @@
     <title>Color Picker - Image</title>
 </head>
 
-<canvas id='my_canvas'></canvas>
+<canvas id='color_display_canvas'></canvas>
 <br>
 <h1 id="current_color">Current Color: </h1>
 <h1 id="picked_color">Picked Color: </h1>
 <br>
 <input type='file' id="image_input"/>
 <br>
-<img id="img" src="#" alt="your image"/>
 
+<img id="img" src="#" onclick="send_rgb_to_server(picked_color_header_id)"
+     onmousemove="display_hovered_color(img_element_id, canvas_element_id)"/>
+
+<!-- load AJAX and our JS -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="static/pick_color_from_image.js"></script>
+<script src="static/js/pick_color_from_image.js"></script>
+
 
 </html>
