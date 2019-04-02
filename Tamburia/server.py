@@ -11,12 +11,6 @@ class GetColorFromScale(tornado.web.RequestHandler):
     def get(self):
         self.render("{}/pick_color_from_scale.html".format(STATIC_DIRNAME))
 
-
-class GetColorFromImage(tornado.web.RequestHandler):
-    def get(self):
-        self.render("{}/pick_color_from_image.html".format(STATIC_DIRNAME))
-
-
 class WebSocketRGBHandler(tornado.websocket.WebSocketHandler):
     def check_origin(self, origin):
         return True
@@ -31,12 +25,11 @@ def make_app():
         "static_url_prefix": "/{}/".format(STATIC_DIRNAME),
     }
     return tornado.web.Application([
-        (r"/scale", GetColorFromScale),
-        (r"/image", GetColorFromImage),
+        (r"/", GetColorFromScale),
         (r"/send_rgb", WebSocketRGBHandler)], **settings)
 
 
 if __name__ == "__main__":
     app = make_app()
-    app.listen(port=port, address="127.0.0.1")
+    app.listen(port=port)
     tornado.ioloop.IOLoop.instance().start()

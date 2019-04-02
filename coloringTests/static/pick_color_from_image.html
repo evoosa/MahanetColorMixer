@@ -1,20 +1,30 @@
 <!DOCTYPE html>
-<html id="html" style="background-color:#ffffff;" lang="en">
+<html id="html" style="background-color:powderblue;color:magenta;font-family:courier;text-align:center;" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Color Picker - Image</title>
 </head>
 
-<canvas id='my_canvas'></canvas>
-<br>
-<h1 id="head"></h1>
-<h1 id="head1">click to select coord</h1>
-<br>
-<input type='file' id="imgInp"/>
-<br>
-<img id="img" src="#" alt="your image"/>
 
+<h1 id="current_color">Current Color: </h1>
+<canvas id='current_color_canvas'></canvas>
+<br>
+
+<h1 id="picked_color">Picked Color: </h1>
+<canvas id='picked_color_canvas'></canvas>
+<br>
+<br>
+
+<h1 id="upload_file_header">PLZ Upload a Photo</h1>
+<input type='file' id="image_input"/>
+<br>
+
+<img id="img" src="#" onclick="handle_color_pick()" onmousemove="display_hovered_color(img_element_id, current_color_canvas_id)"/>
+
+
+<!-- load AJAX and our JS -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="pick_color_from_image.js"></script>
+<script src="static/js/pick_color_from_image.js"></script>
+
 
 </html>
