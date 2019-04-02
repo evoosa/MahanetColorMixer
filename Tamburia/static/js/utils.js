@@ -2,7 +2,19 @@
  * Created by evoosa on 02/04/2019.
  */
 
+// -----------------------------------------------//
+
 var picked_rgb_hex = null;
+
+// server values
+var port = "8888";
+var ip = "127.0.0.1";
+var ws_url = "send_rgb";
+
+// open a global WS to the server
+Socket = getWebSocket(ip, port, ws_url);
+
+// -----------------------------------------------//
 
 function change_background_color(rgb_hex_val) {
     //document.getElementById(color_picker_id).value = rounded_rgb_hex;
@@ -19,4 +31,20 @@ function handle_color_pick(rgb_hex_value) {
 
     // saves the picked color in a global variable
     picked_rgb_hex =  rounded_rgb_hex
+}
+
+function getWebSocket(ip, port, ws_url) {
+    // open a websocket to the server
+    var url = `ws://${ip}:${port}/${ws_url}`;
+    Socket = new WebSocket(url);
+    Socket.onopen = function () {
+        console.log(`opened WS`);
+    };
+    return Socket;
+}
+
+function send_rgb_to_server() {
+    console.log("Sending Color To Server:", picked_rgb_hex);
+    // onclick, send the RGB values to the server, using a WS
+    Socket.send(picked_rgb_hex);
 }
