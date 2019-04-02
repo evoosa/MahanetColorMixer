@@ -1,0 +1,27 @@
+#rgb {
+    border-radius: 10%;
+    height: 600px;
+    width: 600px;
+    border: dashed;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+#rgb::-webkit-color-swatch-wrapper {
+    padding: 10%;
+}
+
+#rgb::-webkit-color-swatch {
+    border: dashed;
+    border-radius: 100%;
+}
+
+#header1 {
+
+    font-size: 100px;
+    font-family: "Copperplate Gothic Light";
+    font-weight: bold;
+    -webkit-text-fill-color: #d1d1d1; /* Will override color (regardless of order) */
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+}

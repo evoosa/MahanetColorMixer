@@ -1,18 +1,24 @@
 <!DOCTYPE html>
-<html id="html" style="background-color:#000000;" lang="en">
+<html id="html" style="background-color:wheat;" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Color Picker - Scale</title>
 </head>
 
+<!-- import JS and CSS -->
 <script type="text/javascript" src="static/js/rgb_to_cmy_math.js"></script>
 <script type="text/javascript" src="static/js/utils.js"></script>
-
-<div>
-    <input type="color" id="rgb" onchange="handle_color_pick(this.value)" value="#000000" style="width=400%;">
-</div>
+<link rel="stylesheet" href="static/design.css">
 
 <body>
+
+<div style="text-align: center">
+    <h1 id="header1">Pick a Color</h1>
+    <br>
+    <input type="color" id="rgb" class="field-radio" onchange="handle_color_pick(this.value)" value="#000000">
+    <br>
+</div>
+
 
 </body>
 </html>
