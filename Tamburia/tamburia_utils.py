@@ -1,5 +1,4 @@
-from config import *
-
+import config
 tamburia_is_running = False
 
 
@@ -24,7 +23,7 @@ def calc_pump_duration(cmy_value: int, cmy_total):
     :return: time, in seconds
     """
 
-    pump_duration = (cmy_value * cup_volume) / (pump_rate * cmy_total)
+    pump_duration = (cmy_value * config.cup_volume) / (config.pump_rate * cmy_total)
     return pump_duration
 
 
@@ -44,6 +43,3 @@ def convert_cmy_to_pump_duration(cmy_triplet: dict):
 # TODO - get a fucking RP !!!!!!!!!!!!!!
 # TODO - try / except if needed?
 # TODO - consider a computer to run the server, in order to handle exceptions and stuff
-
-cmy_triplet = {"c": 80, "m": 80, "y": 80}
-print(convert_cmy_to_pump_duration(cmy_triplet))
