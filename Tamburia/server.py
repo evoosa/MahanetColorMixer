@@ -2,22 +2,24 @@ import tornado.ioloop
 import tornado.web
 import tornado.websocket
 import os
+import ast
 
 STATIC_DIRNAME = "static"
 port = 8888
+
 
 
 class GetColorFromScale(tornado.web.RequestHandler):
     def get(self):
         self.render("{}/pick_color_from_scale.html".format(STATIC_DIRNAME))
 
+
 class WebSocketRGBHandler(tornado.websocket.WebSocketHandler):
     def check_origin(self, origin):
         return True
 
     def on_message(self, message):
-        print(message)
-
+        print("Received CMY: ", ast.literal_eval(message))
 
 def make_app():
     settings = {

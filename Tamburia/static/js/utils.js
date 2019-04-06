@@ -4,7 +4,7 @@
 
 // -----------------------------------------------//
 
-var picked_rgb_hex = null;
+var picked_rgb_hex = "#8080c0";
 
 // server values
 var port = "8888";
@@ -40,11 +40,19 @@ function getWebSocket(ip, port, ws_url) {
     Socket.onopen = function () {
         console.log(`opened WS`);
     };
+
     return Socket;
 }
 
-function send_rgb_to_server() {
-    console.log("Sending Color To Server:", picked_rgb_hex);
+function send_cmy_to_server() {
+    // calculate CMY values from the picked rgb hex
+    var picked_cmy_triplet = rgb_to_rounded_cmy(hexToRgb(picked_rgb_hex));
+    picked_cmy_triplet = JSON.stringify(picked_cmy_triplet);
+
+    console.log("Sending Color To Server");
+    console.log("RGB hex:", picked_rgb_hex);
+    console.log("CMY Triplet:", picked_cmy_triplet);
+
     // onclick, send the RGB values to the server, using a WS
-    Socket.send(picked_rgb_hex);
+    Socket.send(picked_cmy_triplet);
 }
