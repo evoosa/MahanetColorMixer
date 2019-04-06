@@ -11,6 +11,12 @@ def run_tamburia(colors_pump_duration: dict):
     :type colors_pump_duration: dict
     :return: FOCKING NOTHING FOR NOW
     """
+    global tamburia_is_running
+
+    tamburia_is_running = True
+    # runnnnn Tamburia
+    tamburia_is_running = False
+
     # it will set and unset am_i_running when starts / done
 
 
@@ -41,5 +47,5 @@ def convert_cmy_to_pump_duration(cmy_triplet: dict):
 
 # TODO - add more logging in JS and in python!
 # TODO - get a fucking RP !!!!!!!!!!!!!!
-# TODO - try / except if needed?
+# TODO - try / except if needed ?
 # TODO - consider a computer to run the server, in order to handle exceptions and stuff
