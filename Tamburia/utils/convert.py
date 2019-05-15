@@ -1,4 +1,4 @@
-import config
+from utils import config
 
 
 def hex_to_rgb(rgb_hex: str) -> dict:
