@@ -1,15 +1,15 @@
 import config
 
 
-def hex_to_rgb(rgb_hex: str) -> tuple:
+def hex_to_rgb(rgb_hex: str) -> dict:
     """
     Convert RGB hex value to RGB triplet
     """
     rgb_hex = rgb_hex.lstrip('#')
-    return tuple(int(rgb_hex[i:i + 2], 16) for i in (0, 2, 4))
+    return {['r', 'g', 'b'][i]: int(rgb_hex[i * 2:i * 2 + 2], 16) for i in range(3)}
 
 
-def rgb_to_cmy(rgb: tuple) -> dict:
+def rgb_to_cmy(rgb: dict) -> dict:
     """
     Convert RGB triplet to CMY triplet
     """
@@ -18,9 +18,9 @@ def rgb_to_cmy(rgb: tuple) -> dict:
         return int(config.cmy_max_val - rgb_val / config.rgb_cmy_convert_val)
 
     return {
-        'c': rgb_to_cmy_single(rgb[0]),
-        'm': rgb_to_cmy_single(rgb[1]),
-        'y': rgb_to_cmy_single(rgb[2])
+        'c': rgb_to_cmy_single(rgb['r']),
+        'm': rgb_to_cmy_single(rgb['g']),
+        'y': rgb_to_cmy_single(rgb['b'])
     }
 
 
@@ -36,3 +36,10 @@ def cmy_to_pump_time(cmy_triplet: dict) -> dict:
     cmy_total = sum(cmy_triplet.values())
 
     return {key: int(cmy_val_to_pump_dur(value, cmy_total)) for key, value in cmy_triplet.items()}
+
+
+def rgb_hex_to_pump_time(rgb_hex: str) -> dict:
+    """
+    RGB hex > RGB triplet > CMY triplet > pump duration triplet
+    """
+    rgb_triplet = rgb_hex
