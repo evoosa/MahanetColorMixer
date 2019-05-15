@@ -1,7 +1,9 @@
+import os
+from utils.tamburia import runTamburia
+from threading import activeCount
 import tornado.ioloop
 import tornado.web
 import tornado.websocket
-import os
 
 STATIC_DIRNAME = "static"
 port = 8888
@@ -11,12 +13,20 @@ class GetColorFromScale(tornado.web.RequestHandler):
     def get(self):
         self.render("{}/pick_color_from_scale.html".format(STATIC_DIRNAME))
 
+
 class WebSocketRGBHandler(tornado.websocket.WebSocketHandler):
     def check_origin(self, origin):
         return True
 
     def on_message(self, message):
-        print(message)
+        print("Received RGB: ", message, '\n')
+        if activeCount() == 1:
+            new_thread = runTamburia(message)
+            new_thread.start()
+        elif activeCount() == 2:
+            print("\n[ XXX ] Tamburia is already running! GO FUCK YOURSELF\n")
+        else:
+            print("ERROR WTF", activeCount())
 
 
 def make_app():
@@ -32,4 +42,5 @@ def make_app():
 if __name__ == "__main__":
     app = make_app()
     app.listen(port=port)
+    print("[ !!! ] listening on port {}\n".format(port))
     tornado.ioloop.IOLoop.instance().start()

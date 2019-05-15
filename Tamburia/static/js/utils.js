@@ -4,7 +4,7 @@
 
 // -----------------------------------------------//
 
-var picked_rgb_hex = null;
+var picked_rgb_hex = "#8080c0";
 
 // server values
 var port = "8888";
@@ -21,16 +21,14 @@ function change_background_color(rgb_hex_val) {
     document.getElementById("html").style = `background-color:${rgb_hex_val};`;
 }
 
-function handle_color_pick(rgb_hex_value) {
-    // rounds the RGB hex value
-    var rounded_rgb_hex = round_rgb_hex_val(rgb_hex_value);
+function handle_color_pick(rgb_hex_val) {
 
     // colors the background with the chosen color
-    console.log("Picked Color:", rgb_hex_value);
-    change_background_color(rounded_rgb_hex);
+    console.log("Picked Color:", rgb_hex_val);
+    change_background_color(rgb_hex_val);
 
     // saves the picked color in a global variable
-    picked_rgb_hex =  rounded_rgb_hex
+    picked_rgb_hex =  rgb_hex_val
 }
 
 function getWebSocket(ip, port, ws_url) {
@@ -40,11 +38,15 @@ function getWebSocket(ip, port, ws_url) {
     Socket.onopen = function () {
         console.log(`opened WS`);
     };
+
     return Socket;
 }
 
-function send_rgb_to_server() {
-    console.log("Sending Color To Server:", picked_rgb_hex);
+function send_rgb_hex_to_server() {
+
+    console.log("Sending Color To Server");
+    console.log("RGB hex:", picked_rgb_hex);
+
     // onclick, send the RGB values to the server, using a WS
     Socket.send(picked_rgb_hex);
 }
