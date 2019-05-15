@@ -29,11 +29,11 @@ def calc_pump_duration(cmy_value: int, cmy_total):
     :return: time, in seconds
     """
 
-    pump_duration = (cmy_value * config.cup_volume) / (config.pump_rate * cmy_total)
+    pump_duration = (cmy_value * config.cup_volume_ml) / (config.pump_rate_ml_s * cmy_total)
     return pump_duration
 
 
-def convert_cmy_to_pump_duration(cmy_triplet: dict):
+def convert_cmy_to_pump_duration(cmy_triplet: dict): # FIXME EEEEEEEEEEEEEEEEEEEEEEE
     """
     Convert a C / M / Y value to the duration of time the pump needs to pump liquid.
     The value is rounded! float -> int !!!!
@@ -44,8 +44,3 @@ def convert_cmy_to_pump_duration(cmy_triplet: dict):
     colors_pump_duration = {key: int(calc_pump_duration(value, sum(cmy_triplet.values()))) for key, value in cmy_triplet.items()}
 
     return colors_pump_duration
-
-# TODO - add more logging in JS and in python!
-# TODO - get a fucking RP !!!!!!!!!!!!!!
-# TODO - try / except if needed ?
-# TODO - consider a computer to run the server, in order to handle exceptions and stuff
