@@ -35,11 +35,13 @@ def cmy_to_pump_time(cmy_triplet: dict) -> dict:
 
     cmy_total = sum(cmy_triplet.values())
 
-    return {key: int(cmy_val_to_pump_dur(value, cmy_total)) for key, value in cmy_triplet.items()}
+    return {key: (cmy_val_to_pump_dur(value, cmy_total)) for key, value in cmy_triplet.items()}
 
 
 def rgb_hex_to_pump_time(rgb_hex: str) -> dict:
     """
     RGB hex > RGB triplet > CMY triplet > pump duration triplet
     """
-    rgb_triplet = rgb_hex
+    rgb_triplet = hex_to_rgb(rgb_hex)
+    cmy_triplet = rgb_to_cmy(rgb_triplet)
+    return cmy_to_pump_time(cmy_triplet)
