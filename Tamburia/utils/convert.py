@@ -1,4 +1,4 @@
-from utils import config
+from Tamburia.utils import config
 
 
 def hex_to_rgb(rgb_hex: str) -> dict:

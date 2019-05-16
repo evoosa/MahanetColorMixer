@@ -1,12 +1,12 @@
 import os
-from utils.tamburia import runTamburia
+from Tamburia.utils.tamburia import runTamburia
 from threading import activeCount
 import tornado.ioloop
 import tornado.web
 import tornado.websocket
 
 STATIC_DIRNAME = "static"
-port = 8888
+port = 8885
 
 
 class GetColorFromScale(tornado.web.RequestHandler):

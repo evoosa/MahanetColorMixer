@@ -7,7 +7,7 @@
 var picked_rgb_hex = "#8080c0";
 
 // server values
-var port = "8888";
+var port = "8885";
 var ip = "127.0.0.1";
 var ws_url = "send_rgb";
 
@@ -28,7 +28,7 @@ function handle_color_pick(rgb_hex_val) {
     change_background_color(rgb_hex_val);
 
     // saves the picked color in a global variable
-    picked_rgb_hex =  rgb_hex_val
+    picked_rgb_hex = rgb_hex_val
 }
 
 function getWebSocket(ip, port, ws_url) {
@@ -48,5 +48,10 @@ function send_rgb_hex_to_server() {
     console.log("RGB hex:", picked_rgb_hex);
 
     // onclick, send the RGB values to the server, using a WS
-    Socket.send(picked_rgb_hex);
+    if (picked_rgb_hex === "#ffffff") {
+        alert("Don't pick WHITE color !!!!!")
+    }
+    else {
+        Socket.send(picked_rgb_hex);
+    }
 }

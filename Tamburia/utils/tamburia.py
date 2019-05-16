@@ -1,5 +1,5 @@
-from utils.convert import rgb_hex_to_pump_time
-from utils.pi import run_pumps
+from Tamburia.utils.convert import rgb_hex_to_pump_time
+from Tamburia.utils.pi import run_pumps
 from threading import Thread
 
 
