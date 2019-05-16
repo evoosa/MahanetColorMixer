@@ -8,7 +8,7 @@ var picked_rgb_hex = "#8080c0";
 
 // server values
 var port = "8885";
-var ip = "127.0.0.1";
+var ip = "10.100.102.7";
 var ws_url = "send_rgb";
 
 // open a global WS to the server

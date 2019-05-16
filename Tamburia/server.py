@@ -7,6 +7,7 @@ import tornado.websocket
 
 STATIC_DIRNAME = "static"
 port = 8885
+address = '0.0.0.0'
 
 
 class GetColorFromScale(tornado.web.RequestHandler):
@@ -41,6 +42,6 @@ def make_app():
 
 if __name__ == "__main__":
     app = make_app()
-    app.listen(port=port)
+    app.listen(port=port, address=address)
     print("[ !!! ] listening on port {}\n".format(port))
     tornado.ioloop.IOLoop.instance().start()
