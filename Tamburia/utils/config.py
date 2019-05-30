@@ -2,7 +2,7 @@
 cup_volume_ml = 200
 
 # Pump rate in milliliters per millisecond
-pump_rate_ml_s = 10 # FIXME
+pump_rate_ml_s = 23
 
 # CMY maximum value, should be 100 or 1
 cmy_max_val = 100
