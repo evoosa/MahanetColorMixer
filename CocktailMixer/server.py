@@ -1,33 +1,69 @@
 import os
-from Tamburia.utils.tamburia import runTamburia
 from threading import activeCount
+
 import tornado.ioloop
 import tornado.web
 import tornado.websocket
 
+from CocktailMixer.utils.print_stuff import printDrink
+
+# ---- Constants---- #
+
 STATIC_DIRNAME = "static"
-port = 8885
-address = '0.0.0.0'
+PORT = 80
+ADDRESS = '0.0.0.0'
+
+TAMBURIA_IS_RUNNING_MSG = "\n[ XXX ] Tamburia is already running! GO FUCK YOURSELF\n"
+ERROR_WTF_MSG = "ERROR WTF"
 
 
-class GetColorFromScale(tornado.web.RequestHandler):
+# ---- Request Handlers ---- #
+
+class getUserChoice(tornado.web.RequestHandler):
     def get(self):
-        self.render("{}/pick_color_from_scale.html".format(STATIC_DIRNAME))
+        self.render("{}/get_user_choice.html".format(STATIC_DIRNAME))
 
 
-class WebSocketRGBHandler(tornado.websocket.WebSocketHandler):
+class getMonoDrink(tornado.web.RequestHandler):
+    def get(self):
+        self.render("{}/get_mono_drink.html".format(STATIC_DIRNAME))
+
+
+class getCocktail(tornado.web.RequestHandler):
+    def get(self):
+        self.render("{}/get_cocktail.html".format(STATIC_DIRNAME))
+
+
+# ---- WS Handlers ---- #
+
+class wsMonoDrinkHandler(tornado.websocket.WebSocketHandler):
     def check_origin(self, origin):
         return True
 
     def on_message(self, message):
-        print("Received RGB: ", message, '\n')
+        print("Received monoDrink: ", message, '\n')
         if activeCount() == 1:
-            new_thread = runTamburia(message)
+            new_thread = printDrink('cocktail', message)
             new_thread.start()
         elif activeCount() == 2:
-            print("\n[ XXX ] Tamburia is already running! GO FUCK YOURSELF\n")
+            print(TAMBURIA_IS_RUNNING_MSG)
         else:
-            print("ERROR WTF", activeCount())
+            print(ERROR_WTF_MSG, activeCount())
+
+
+class wsCocktailHandler(tornado.websocket.WebSocketHandler):
+    def check_origin(self, origin):
+        return True
+
+    def on_message(self, message):
+        print("Received cocktail: ", message, '\n')
+        if activeCount() == 1:
+            new_thread = printDrink('mono_drink', message)
+            new_thread.start()
+        elif activeCount() == 2:
+            print(TAMBURIA_IS_RUNNING_MSG)
+        else:
+            print(ERROR_WTF_MSG, activeCount())
 
 
 def make_app():
@@ -36,12 +72,15 @@ def make_app():
         "static_url_prefix": "/{}/".format(STATIC_DIRNAME),
     }
     return tornado.web.Application([
-        (r"/", GetColorFromScale),
-        (r"/send_rgb", WebSocketRGBHandler)], **settings)
+        (r"/", getUserChoice),
+        (r"/send_drink", wsMonoDrinkHandler),
+        (r"/send_cocktail", wsCocktailHandler),
+        (r"/mono_drink", getMonoDrink),
+        (r"/cocktail", getCocktail)], **settings)
 
 
 if __name__ == "__main__":
     app = make_app()
-    app.listen(port=port, address=address)
-    print("[ !!! ] listening on port {}\n".format(port))
+    app.listen(port=PORT, address=ADDRESS)
+    print("[ !!! ] listening on port {}\n".format(PORT))
     tornado.ioloop.IOLoop.instance().start()
