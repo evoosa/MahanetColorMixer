@@ -4,17 +4,16 @@ from CocktailMixer.utils.send_to_arduino import send_to_ardi
 
 
 class printDrink(Thread):
-    def __init__(self, drink_type, drink_value):
+    def __init__(self, pump_times):
         Thread.__init__(self)
-        self.drink_type = drink_type
-        self.drink_value = drink_value
+        self.drink_value = pump_times
 
     def run(self):
         """
-        Run the Tamburia!
+        Run the CoctailMixer!
         Literally pump the colors to the cup.
         """
 
-        print("[ VVV ] Tamburia is running!")
-        send_to_ardi(self.drink_type, self.drink_value)
-        print("[ !!! ] Tamburia is done!")
+        print("[ VVV ] CoctailMixer is running!")
+        send_to_ardi(self.drink_value)
+        print("[ !!! ] CoctailMixer is done!")

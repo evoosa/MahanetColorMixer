@@ -13,7 +13,7 @@ STATIC_DIRNAME = "static"
 PORT = 80
 ADDRESS = '0.0.0.0'
 
-TAMBURIA_IS_RUNNING_MSG = "\n[ XXX ] Tamburia is already running! GO FUCK YOURSELF\n"
+CM_IS_RUNNING_MSG = "\n[ XXX ] Tamburia is already running! GO FUCK YOURSELF\n"
 ERROR_WTF_MSG = "ERROR WTF"
 
 
@@ -43,12 +43,12 @@ class wsMonoDrinkHandler(tornado.websocket.WebSocketHandler):
     def on_message(self, message):
         print("Received monoDrink: ", message, '\n')
         if activeCount() == 1:
-            new_thread = printDrink('cocktail', message)
+            new_thread = printDrink(message)
             new_thread.start()
         elif activeCount() == 2:
-            print(TAMBURIA_IS_RUNNING_MSG)
+            print(CM_IS_RUNNING_MSG)
         else:
-            print(ERROR_WTF_MSG, activeCount())
+            print(ERROR_WT  F_MSG, activeCount())
 
 
 class wsCocktailHandler(tornado.websocket.WebSocketHandler):
@@ -58,10 +58,10 @@ class wsCocktailHandler(tornado.websocket.WebSocketHandler):
     def on_message(self, message):
         print("Received cocktail: ", message, '\n')
         if activeCount() == 1:
-            new_thread = printDrink('mono_drink', message)
+            new_thread = printDrink(message)
             new_thread.start()
         elif activeCount() == 2:
-            print(TAMBURIA_IS_RUNNING_MSG)
+            print(CM_IS_RUNNING_MSG)
         else:
             print(ERROR_WTF_MSG, activeCount())
 
@@ -76,7 +76,8 @@ def make_app():
         (r"/send_drink", wsMonoDrinkHandler),
         (r"/send_cocktail", wsCocktailHandler),
         (r"/mono_drink", getMonoDrink),
-        (r"/cocktail", getCocktail)], **settings)
+        (r"/cocktail", getCocktail)],
+        **settings)
 
 
 if __name__ == "__main__":

@@ -1,13 +1,18 @@
 # Cup volume in milliliters
-cup_volume_ml = 200
+CUP_VOLUME_ML = 200
 
 # Pump rate in milliliters per millisecond
-pump_rate_ml_s = 23
+PUMP_RATE_ML_S = 23
 
 ### Pump config ###
 
 # Num of seconds to idle between pump jobs
-idle_time = 2
+IDLE_TIME = 2
 
 # Num of seconds to add for each drink (because of the length of the tubes)
-extra_pump_time = 0.5
+EXTRA_PUMP_TIME = 0.5
+
+# Arduino
+ARDUINO_PORT = '80'
+ARDUINO_IP = "10.100.102.7"
+HANDLE_DRINK_REDIRECTION = "handle_drink"
