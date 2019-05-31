@@ -1,80 +1,95 @@
 //
 // Created by evoosa on 30/05/2019.
 //
-
+#include <stdlib.h>
+#include <stdio.h>
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
+#include <WebSocketClient.h>
+#include <cstdlib>
+#include <string>
+
 
 // Constants Definitions
+String message;
 
-#ifndef STASSID
-#define STASSID "NONA"
-#define STAPSK  "0544556008"
+// WIFI related shit
+const char* SSID = "NONA";
+const char* PASSWORD = "0544556008";
+const int PORT = 80;
 
-// !!!!!!!!! PAY ATTENTION - the pinc names start with D fuck!!!!!!!
-#define LED_BUILTIN D13
+// WS related shit
+char WS_PATH[] = "/ard_ws";
+char SERVER_IP[] = "10.100.102.7";
+
+// pump related shit //
+#define PUMP1 D13
+#define PUMP2 D14
+#define PUMP3 D15
 #endif
 
-const char* ssid = STASSID;
-const char* password = STAPSK;
+int PUMP_PINS[3] = { D13, D14, D15 };
+int PUMP_DELAY_TIME = 2;
 
-const int port = 6969;
+// Connect to WebServer on port PORT
+ESP8266WebServer server(PORT);
+// Connect to WS server on port WS_PORT
+WebSocketClient webSocketClient;
 
-// Connect to WebServer on port 'port'
-ESP8266WebServer server(port);
+// Run pump
+void runPump(pump_pin, pump_time) {
+    webSocketClient.sendData("[ !!! ] pump '" + std::to_string(pump_pin) + "' is ON for " + std::to_string(pump_time) + " ms");
 
-//    Handle the '/' redirection    //
+    //digitalWrite(pump_pin, HIGH);
+    //delay(pump_time);
+    //digitalWrite(pump_pin, LOW);
+
+    webSocketClient.sendData("[ VVV ] DONE!");
+}
+
+//      Handle redirections         //
+
+// Handle Drink / Cocktail redirections
+void makeDrink(pump_times) {
+    webSocketClient.sendData("[ !!! ] making drink...");
+    for ( int i = 0; i < 4; i++ ) {
+        pump_pin = PUMP_PINS[i];
+        int pump_time = std::atoi (server.arg(i));
+        run_pump(pump_pin, pump_time);
+        delay(PUMP_DELAY_TIME);
+    }
+
+    webSocketClient.sendData("[ VVV ] DONE!");
+
+    // tell server everything is damn FINE
+    server.send(200, "text/plain", message);
+}
+
+// Handle messages from the server
+void handleMessage() {
+    pump_times = server.args();
+    webSocketClient.sendData("[ !!! ] got message: " + pump_times);
+    makeDrink(pump_times)
+}
+
+// Handle the '/' redirection
 void handleRoot() {
     server.send(200, "text/plain", "THIS IS THE ROOT PAGE GO AWAY");
     Serial.println("Root");
 }
 
-//    Handle Drink / Cocktail redirections    //
-
-//  Drink
-void makeDrink() {
-
-}
-    Serial.println("drink");
-    Serial.println(server.args());
-    for (uint8_t i = 0; i < server.args(); i++) {
-        message += " " + server.argName(i) + ": " + server.arg(i) + "\n";
-    Serial.println(message);
-}
-
-//  Cocktail
-void makeCocktail() {
-    Serial.println("cocktail");
-    Serial.println(server.args());
-    for (uint8_t i = 0; i < server.args(); i++) {
-        message += " " + server.argName(i) + ": " + server.arg(i) + "\n";
-        Serial.println(message);
-}
-
-//    Handle the '/???' redirection   //
+// Handle the '/???' redirection
 void handleNotFound() {
-    String message = "File Not Found\n\n";
-    message += "URI: ";
-    message += server.uri();
-    message += "\nMethod: ";
-    message += (server.method() == HTTP_GET) ? "GET" : "POST";
-    message += "\nArguments: ";
-    message += server.args();
-    message += "\n";
-    for (uint8_t i = 0; i < server.args(); i++) {
-        message += " " + server.argName(i) + ": " + server.arg(i) + "\n";
-    }
-    server.send(404, "text/plain", message);
+    server.send(404, "text/plain", "GO AWAY PLS");
     Serial.println("Not Found");
-
 }
 
 void setup(void) {
     Serial.begin(115200);
     WiFi.mode(WIFI_STA);
-    WiFi.begin(ssid, password);
+    WiFi.begin(SSID, PASSWORD);
     Serial.println("");
 
     // Wait for connection
@@ -84,7 +99,7 @@ void setup(void) {
     }
     Serial.println("");
     Serial.print("Connected to ");
-    Serial.println(ssid);
+    Serial.println(SSID);
     Serial.print("IP address: ");
     Serial.println(WiFi.localIP());
 
@@ -94,13 +109,25 @@ void setup(void) {
 
     // Initialize handles for the redirections
     server.on("/", handleRoot);
-    server.on("/cocktail", makeCocktail);
-    server.on("/drink", makeDrink);
+    server.on("/handle_drink", handleMessage);
     server.onNotFound(handleNotFound);
 
     // Start the WebServer !
     server.begin();
     Serial.println("HTTP server started");
+
+    // connect to the server's ws
+    webSocketClient.path = path;
+    webSocketClient.host = host;
+    if (webSocketClient.handshake(client)) {
+        webSocketClient.sendData("Handshake successful");
+    }
+    else {
+        Serial.println("Handshake failed.");
+    while(1) {
+      // Hang on failure
+        }
+    }
 }
 
 void loop(void) {

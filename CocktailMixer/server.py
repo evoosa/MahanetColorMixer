@@ -36,7 +36,7 @@ class getCocktail(tornado.web.RequestHandler):
 
 # ---- WS Handlers ---- #
 
-class wsMonoDrinkHandler(tornado.websocket.WebSocketHandler):
+class wsMessageHandler(tornado.websocket.WebSocketHandler):
     def check_origin(self, origin):
         return True
 
@@ -48,22 +48,20 @@ class wsMonoDrinkHandler(tornado.websocket.WebSocketHandler):
         elif activeCount() == 2:
             print(CM_IS_RUNNING_MSG)
         else:
-            print(ERROR_WT  F_MSG, activeCount())
+            print(ERROR_WTF_MSG, activeCount())
 
-
-class wsCocktailHandler(tornado.websocket.WebSocketHandler):
+class wsArduinoHandler(tornado.websocket.WebSocketHandler):
     def check_origin(self, origin):
         return True
 
+    def open(self):
+        print("Connected To Arduino!")
+
     def on_message(self, message):
-        print("Received cocktail: ", message, '\n')
-        if activeCount() == 1:
-            new_thread = printDrink(message)
-            new_thread.start()
-        elif activeCount() == 2:
-            print(CM_IS_RUNNING_MSG)
-        else:
-            print(ERROR_WTF_MSG, activeCount())
+        print(message)
+
+    def on_close(self):
+        print("WebSocket closed")
 
 
 def make_app():
@@ -73,8 +71,8 @@ def make_app():
     }
     return tornado.web.Application([
         (r"/", getUserChoice),
-        (r"/send_drink", wsMonoDrinkHandler),
-        (r"/send_cocktail", wsCocktailHandler),
+        (r"/drink_ws", wsMessageHandler),
+        (r"/ard_ws", wsArduinoHandler),
         (r"/mono_drink", getMonoDrink),
         (r"/cocktail", getCocktail)],
         **settings)

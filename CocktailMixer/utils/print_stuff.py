@@ -1,19 +1,22 @@
 from threading import Thread
 
+from CocktailMixer.utils.convert import convert_msg_to_pump_times
 from CocktailMixer.utils.send_to_arduino import send_to_ardi
 
 
 class printDrink(Thread):
-    def __init__(self, pump_times):
+    def __init__(self, msg):
         Thread.__init__(self)
-        self.drink_value = pump_times
+        self.msg = msg
+        self.pump_times = None
 
     def run(self):
         """
-        Run the CoctailMixer!
+        Run the CocktailMixer!
         Literally pump the colors to the cup.
         """
 
-        print("[ VVV ] CoctailMixer is running!")
-        send_to_ardi(self.drink_value)
-        print("[ !!! ] CoctailMixer is done!")
+        print("[ VVV ] CocktailMixer is running!")
+        self.pump_times = convert_msg_to_pump_times(self.msg)
+        send_to_ardi(self.pump_times)
+        print("[ !!! ] CocktailMixer is done!")
