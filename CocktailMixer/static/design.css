@@ -1,21 +1,3 @@
-#rgb {
-    border-radius: 10%;
-    height: 600px;
-    width: 600px;
-    border: dashed;
-    outline: none;
-    -webkit-appearance: none;
-}
-
-#rgb::-webkit-color-swatch-wrapper {
-    padding: 10%;
-}
-
-#rgb::-webkit-color-swatch {
-    border: dashed;
-    border-radius: 100%;
-}
-
 #header1 {
 
     font-size: 100px;
@@ -25,25 +7,27 @@
     -webkit-text-stroke-color: black;
 }
 
-#send_rgb_button {
-  display: inline-block;
-  padding: 15px 25px;
-  font-size: 24px;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  outline: medium;
-  color: #000000;
-  background-color: #4CAF50;
-  border: none;
-  border-radius: 15px;
-  box-shadow: 0 9px #999;
+#mono_drink, #cocktail {
+    display: inline-block;
+    padding: 15px 25px;
+    font-size: 24px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: medium;
+    color: #000000;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;
 }
 
-#send_rgb_button:hover {background-color: #3e8e41}
+#mono_drink:hover, #cocktail:hover {
+    background-color: #3e8e41
+}
 
-#send_rgb_button:active {
-  background-color: #3e8e41;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
+#mono_drink:active, #cocktail:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
 }
