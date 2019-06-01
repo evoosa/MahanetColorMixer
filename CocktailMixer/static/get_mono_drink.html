@@ -14,25 +14,18 @@
 <div style="text-align: center">
     <h1 class="headers2" id="header2">Plz Pick a Drenk</h1>
     <br>
-    <form method="get" action="/drink">
-        <button class="buttons" type="submit" id="vodka_c">Vodka</button>
-    </form>
+    <button class="buttons" type="submit" id="vodka_c" onclick="send_mono_drink_to_server(0);">Vodka</button>
     <br>
     <br>
     <br>
     <br>
-    <form method="get" action="/cocktail">
-        <button class="buttons" type="submit" id="coke_c">Coke</button>
-    </form>
+    <button class="buttons" type="submit" id="coke_c" onclick="send_mono_drink_to_server(1);">Coke</button>
     <br>
     <br>
     <br>
     <br>
-    <form method="get" action="/drink">
-        <button class="buttons" type="submit" id="arak_c">Arak</button>
-    </form>
+    <button class="buttons" type="submit" id="arak_c" onclick="send_mono_drink_to_server(2);">Arak</button>
 </div>
-
 
 </body>
 </html>

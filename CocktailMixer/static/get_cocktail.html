@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="html "id="html" lang="en">
+<html class="html " id="html" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Cocktail!</title>
@@ -13,14 +13,18 @@
 
 <div class="slidecontainer" style="text-align: center">
     <h1 class="headers2" id="vodka_h">Vodka</h1>
-    <input type="range" min="0" max="100" value="50" class="slider" id="vodka_range">
+    <input type="range" min="0" max="100" value="50" class="slider" id="vodka_range"
+           onchange="set_drink_values(this.value, 2)">
     <br>
     <h1 class="headers2" id="coke_h">Coke</h1>
-    <input type="range" min="0" max="100" value="50" class="slider" id="coke_range">
+    <input type="range" min="0" max="100" value="50" class="slider" id="coke_range"
+           onchange="set_drink_values(this.value, 1)">
     <br>
     <h1 class="headers2" id="arak_h">Arak</h1>
-    <input type="range" min="0" max="100" value="50" class="slider" id="arak_range">
+    <input type="range" min="0" max="100" value="50" class="slider" id="arak_range"
+           onchange="set_drink_values(this.value, 2)">
     <br>
+    <button class="buttons" type="submit" id="send_cocktail" onclick="send_drink_values_to_server();">Coke</button>
 </div>
 </body>
 </html>

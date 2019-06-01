@@ -10,7 +10,7 @@ from CocktailMixer.utils.print_stuff import printDrink
 # ---- Constants---- #
 
 STATIC_DIRNAME = "static"
-PORT = 800
+PORT = 8881
 ADDRESS = '0.0.0.0'
 
 CM_IS_RUNNING_MSG = "\n[ XXX ] Tamburia is already running! GO FUCK YOURSELF\n"
@@ -36,7 +36,7 @@ class getCocktail(tornado.web.RequestHandler):
 
 # ---- Logs from arduino handler ---- #
 
-class getMsg(tornado.web.RequestHandler):
+class getArduinoMsg(tornado.web.RequestHandler):
     def get(self):
         msg = self.get_argument('msg', 'NO_ARG_WTF', True)
         print(msg)
@@ -65,10 +65,10 @@ def make_app():
     }
     return tornado.web.Application([
         (r"/", getUserChoice),
-        (r"/drink_ws", wsMessageHandler),
+        (r"/ws", wsMessageHandler),
         (r"/drink", getMonoDrink),
         (r"/cocktail", getCocktail),
-        (r"/get_msg", getMsg)],
+        (r"/get_msg", getArduinoMsg)],
         **settings)
 
 

@@ -22,7 +22,7 @@ const char* PASSWORD = "behartsalik";
 const int PORT = 80;
 
 // Logging related shit
-//char SERVER_IP[] = "10.100.102.7";
+//char SERVER_IP[] = "10.100.102.6";
 char SERVER_IP[] = "192.168.1.16";
 char MSG_URL[] = "/get_msg";
 String LOG_URL = String("http://") + SERVER_IP + ":" + PORT + MSG_URL + "?msg=";

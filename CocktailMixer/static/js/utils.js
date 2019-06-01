@@ -4,32 +4,17 @@
 
 // -----------------------------------------------//
 
-var picked_rgb_hex = "#8080c0";
+var picked_drink_values = [50, 50, 50];
 
 // server values
-var port = "8885";
-var ip = "10.100.102.7";
-var ws_url = "send_rgb";
+var port = "8881";
+var ip = "10.100.102.6";
+var ws_url = "ws";
 
 // open a global WS to the server
 Socket = getWebSocket(ip, port, ws_url);
 
 // -----------------------------------------------//
-
-function change_background_color(rgb_hex_val) {
-    //document.getElementById(color_picker_id).value = rounded_rgb_hex;
-    document.getElementById("html").style = `background-color:${rgb_hex_val};`;
-}
-
-function handle_color_pick(rgb_hex_val) {
-
-    // colors the background with the chosen color
-    console.log("Picked Color:", rgb_hex_val);
-    change_background_color(rgb_hex_val);
-
-    // saves the picked color in a global variable
-    picked_rgb_hex = rgb_hex_val
-}
 
 function getWebSocket(ip, port, ws_url) {
     // open a websocket to the server
@@ -42,16 +27,23 @@ function getWebSocket(ip, port, ws_url) {
     return Socket;
 }
 
-function send_rgb_hex_to_server() {
+function set_drink_values(value, position) {
+    picked_drink_values[position] = value;
+    console.log(value, position);
+}
 
-    console.log("Sending Color To Server");
-    console.log("RGB hex:", picked_rgb_hex);
+function send_mono_drink_to_server(position) {
+    picked_drink_values = [0, 0, 0];
+    picked_drink_values[position] = 100;
+    send_drink_values_to_server();
+}
 
-    // onclick, send the RGB values to the server, using a WS
-    if (picked_rgb_hex === "#ffffff") {
-        alert("Don't pick WHITE color !!!!!")
-    }
-    else {
-        Socket.send(picked_rgb_hex);
-    }
+function send_drink_values_to_server() {
+
+    console.log("Sending Drink Values To Server");
+    drink_values = picked_drink_values.join();
+    console.log("RGB hex:", drink_values);
+
+    // onclick, send the picked drink values to the server, using a WS
+    Socket.send(drink_values);
 }
