@@ -29,7 +29,6 @@ function getWebSocket(ip, port, ws_url) {
 
 function set_drink_values(value, position) {
     picked_drink_values[position] = value;
-    console.log(value, position);
 }
 
 function send_mono_drink_to_server(position) {

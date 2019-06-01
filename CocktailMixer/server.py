@@ -5,7 +5,7 @@ import tornado.ioloop
 import tornado.web
 import tornado.websocket
 
-from CocktailMixer.utils.print_stuff import printDrink
+from CocktailMixer.utils.print_drink import printDrink
 
 # ---- Constants---- #
 
