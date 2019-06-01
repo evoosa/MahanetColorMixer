@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html id="html" style="background-color:wheat;" lang="en">
+<html class="html" id="html" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Color Picker - Scale</title>
+    <title>Drink!</title>
 </head>
 
 <!-- import JS and CSS -->
@@ -12,16 +12,28 @@
 <body>
 
 <div style="text-align: center">
-    <h1 id="header1">Pick a Color</h1>
+    <h1 class="headers2" id="header2">Plz Pick a Drenk</h1>
     <br>
-    <input type="color" id="rgb" class="field-radio" onchange="handle_color_pick(this.value)" value="#000000">
+    <form method="get" action="/drink">
+        <button class="buttons" type="submit" id="vodka_c">Vodka</button>
+    </form>
     <br>
     <br>
     <br>
     <br>
-    <button id="send_rgb_button" onclick="send_rgb_hex_to_server()">Send Color To Printer</button>
+    <form method="get" action="/cocktail">
+        <button class="buttons" type="submit" id="coke_c">Coke</button>
+    </form>
+    <br>
+    <br>
+    <br>
+    <br>
+    <form method="get" action="/drink">
+        <button class="buttons" type="submit" id="arak_c">Arak</button>
+    </form>
 </div>
 
 
 </body>
 </html>
+

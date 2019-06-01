@@ -66,7 +66,7 @@ def make_app():
     return tornado.web.Application([
         (r"/", getUserChoice),
         (r"/drink_ws", wsMessageHandler),
-        (r"/mono_drink", getMonoDrink),
+        (r"/drink", getMonoDrink),
         (r"/cocktail", getCocktail),
         (r"/get_msg", getMsg)],
         **settings)

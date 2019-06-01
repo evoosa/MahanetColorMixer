@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html id="html" style="background-color:wheat;" lang="en">
+<html class="html "id="html" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Color Picker - Scale</title>
+    <title>Cocktail!</title>
 </head>
 
 <!-- import JS and CSS -->
@@ -11,17 +11,17 @@
 
 <body>
 
-<div style="text-align: center">
-    <h1 id="header1">Pick a Color</h1>
+<div class="slidecontainer" style="text-align: center">
+    <h1 class="headers2" id="vodka_h">Vodka</h1>
+    <input type="range" min="0" max="100" value="50" class="slider" id="vodka_range">
     <br>
-    <input type="color" id="rgb" class="field-radio" onchange="handle_color_pick(this.value)" value="#000000">
+    <h1 class="headers2" id="coke_h">Coke</h1>
+    <input type="range" min="0" max="100" value="50" class="slider" id="coke_range">
     <br>
+    <h1 class="headers2" id="arak_h">Arak</h1>
+    <input type="range" min="0" max="100" value="50" class="slider" id="arak_range">
     <br>
-    <br>
-    <br>
-    <button id="send_rgb_button" onclick="send_rgb_hex_to_server()">Send Color To Printer</button>
 </div>
-
-
 </body>
 </html>
+
