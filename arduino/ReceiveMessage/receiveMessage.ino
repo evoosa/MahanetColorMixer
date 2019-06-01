@@ -15,15 +15,12 @@ using namespace std;
 String message;
 
 // WIFI related shit
-//const char* SSID = "NONA";
-//const char* PASSWORD = "0544556008";
-const char* SSID = "grapes";
-const char* PASSWORD = "behartsalik";
+const char* SSID = "NONA";
+const char* PASSWORD = "0544556008";
 const int PORT = 80;
 
 // Logging related shit
-//char SERVER_IP[] = "10.100.102.6";
-char SERVER_IP[] = "192.168.1.16";
+char SERVER_IP[] = "10.100.102.6";
 char MSG_URL[] = "/get_msg";
 String LOG_URL = String("http://") + SERVER_IP + ":" + PORT + MSG_URL + "?msg=";
 
@@ -67,12 +64,12 @@ void runPump(int pump_pin, int pump_time) {
 
 void handleMessage() {
   // Handle messages from the server, and make the drink
-    send_get_to_server("[ !!! ] got message! ");
+    send_get_to_server("[ !!! ] got message!");
     send_get_to_server("[ !!! ] making drink...");
-    for ( int i = 0; i < 4; i++ ) {
+    for ( int i = 0; i < 3; i++ ) {
         int pump_pin = PUMP_PINS[i];
         int pump_time = server.arg(i).toInt();
-        runPump(pump_pin, pump_time);
+        //runPump(pump_pin, pump_time);
         delay(PUMP_DELAY_TIME);
     }
 
@@ -114,14 +111,15 @@ void setup(void) {
 
     // Initialize handles for the redirections
     server.on("/", handleRoot);
-    server.on("/drink", handleMessage);
+    server.on("/handle_drink", handleMessage);
     server.onNotFound(handleNotFound);
 
     // Start the WebServer !
     server.begin();
     Serial.println("HTTP server started");
+  }
 
-}
+
 
 void loop(void) {
   server.handleClient();

@@ -18,6 +18,5 @@ class printDrink(Thread):
 
         print("[ VVV ] CocktailMixer is running!")
         self.pump_times = convert_msg_to_pump_times(self.msg)
-        print(self.pump_times)
         send_to_ardi(self.pump_times)
         print("[ !!! ] CocktailMixer is done!") # FIXME - should be received by the ardi!

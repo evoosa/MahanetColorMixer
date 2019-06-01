@@ -7,7 +7,7 @@
 var picked_drink_values = [50, 50, 50];
 
 // server values
-var port = "8881";
+var port = "8080";
 var ip = "10.100.102.6";
 var ws_url = "ws";
 

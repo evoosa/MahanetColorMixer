@@ -10,7 +10,7 @@ from CocktailMixer.utils.print_drink import printDrink
 # ---- Constants---- #
 
 STATIC_DIRNAME = "static"
-PORT = 8881
+PORT = 8080
 ADDRESS = '0.0.0.0'
 
 CM_IS_RUNNING_MSG = "\n[ XXX ] Tamburia is already running! GO FUCK YOURSELF\n"
