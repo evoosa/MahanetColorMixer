@@ -3,28 +3,29 @@
 //
 #include <stdlib.h>
 #include <stdio.h>
-#include <ESP8266WiFi.h>
-#include <WiFiClient.h>
 #include <ESP8266WebServer.h>
-#include <ESP8266mDNS.h>
-#include <WebSocketClient.h>
+#include <ESP8266WiFi.h>
+#include <ESP8266HTTPClient.h>
 #include <cstdlib>
 #include <string>
 #include <iostream>
 using namespace std;
 
-
 // Constants Definitions
 String message;
 
 // WIFI related shit
-const char* SSID = "NONA";
-const char* PASSWORD = "0544556008";
+//const char* SSID = "NONA";
+//const char* PASSWORD = "0544556008";
+const char* SSID = "grapes";
+const char* PASSWORD = "behartsalik";
 const int PORT = 80;
 
-// WS related shit
-char WS_PATH[] = "/ard_ws";
-char SERVER_IP[] = "10.100.102.7";
+// Logging related shit
+//char SERVER_IP[] = "10.100.102.7";
+char SERVER_IP[] = "192.168.1.16";
+char MSG_URL[] = "/get_msg";
+String LOG_URL = String("http://") + SERVER_IP + ":" + PORT + MSG_URL + "?msg=";
 
 // pump related shit //
 #define PUMP1 D13
@@ -36,32 +37,38 @@ int PUMP_DELAY_TIME = 2;
 
 // Connect to WebServer on port PORT
 ESP8266WebServer server(PORT);
-// Connect to WS server on port WS_PORT
-WebSocketClient webSocketClient;
-// Use WiFiClient class to create TCP connections
-WiFiClient client;
+//Declare an object of class HTTPClient
+HTTPClient http;
+
+void send_get_to_server(String msg) {
+    msg.replace(" ", "%20");
+    Serial.println(LOG_URL + msg);
+    http.begin(LOG_URL + msg);
+    http.GET();
+}
 
 // Run pump
 void runPump(int pump_pin, int pump_time) {
     String str_pump_pin = String(pump_pin);
     String str_pump_time = String(pump_time);
-    webSocketClient.sendData("[ !!! ] pump '" + str_pump_pin + "' is ON for " + str_pump_time + " ms");
 
+    String msg = "[ !!! ] pump '" + str_pump_pin + "' is ON for " + str_pump_time + " ms";
+    send_get_to_server(msg);
     //digitalWrite(pump_pin, HIGH);
     //delay(pump_time);
     //digitalWrite(pump_pin, LOW);
 
-    webSocketClient.sendData("[ VVV ] DONE!");
+    send_get_to_server("[ VVV ] DONE!");
 }
 
 //      Handle redirections         //
 
 // Handle Drink / Cocktail redirections
 
-// Handle messages from the server, and make the drink
 void handleMessage() {
-    webSocketClient.sendData("[ !!! ] got message: " + server.args());
-    webSocketClient.sendData("[ !!! ] making drink...");
+  // Handle messages from the server, and make the drink
+    send_get_to_server("[ !!! ] got message! ");
+    send_get_to_server("[ !!! ] making drink...");
     for ( int i = 0; i < 4; i++ ) {
         int pump_pin = PUMP_PINS[i];
         int pump_time = server.arg(i).toInt();
@@ -69,7 +76,7 @@ void handleMessage() {
         delay(PUMP_DELAY_TIME);
     }
 
-    webSocketClient.sendData("[ VVV ] DONE!");
+    send_get_to_server("[ VVV ] DONE!");
 
     // tell server everything is damn FINE
     server.send(200, "text/plain", message);
@@ -99,15 +106,11 @@ void setup(void) {
         delay(500);
         Serial.print(".");
     }
-    Serial.println("");
-    Serial.print("Connected to ");
-    Serial.println(SSID);
+
+    // Print connection data
+    Serial.println(String("\nConnected to: ") + SSID);
     Serial.print("IP address: ");
     Serial.println(WiFi.localIP());
-
-    if (MDNS.begin("esp8266")) {
-        Serial.println("MDNS responder started");
-    }
 
     // Initialize handles for the redirections
     server.on("/", handleRoot);
@@ -118,31 +121,8 @@ void setup(void) {
     server.begin();
     Serial.println("HTTP server started");
 
-    // Connect to the websocket server
-    if (client.connect(SERVER_IP, PORT)) {
-      Serial.println("Connected");
-    } else {
-      Serial.println("Connection failed.");
-      while(1) {
-        // Hang on failure
-      }
-    }
-
-    // handshake with the ws server
-    webSocketClient.path = WS_PATH;
-    webSocketClient.host = SERVER_IP;
-    if (webSocketClient.handshake(client)) {
-        webSocketClient.sendData("Handshake successful");
-    }
-    else {
-        Serial.println("Handshake failed.");
-    while(1) {
-      // Hang on failure
-        }
-    }
 }
 
 void loop(void) {
-    server.handleClient();
-    MDNS.update();
+  server.handleClient();
 }
