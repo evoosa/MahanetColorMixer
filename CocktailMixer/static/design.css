@@ -7,10 +7,19 @@
     -webkit-text-stroke-color: black;
 }
 
+#header2 {
+
+    font-size: 60px;
+    font-family: "Arial Black", Gadget, sans-serif;
+    -webkit-text-fill-color: #89af33; /* Will override color (regardless of order) */
+    -webkit-text-stroke-width: 4px;
+    -webkit-text-stroke-color: black;
+}
+
 #mono_drink, #cocktail {
     display: inline-block;
-    padding: 15px 25px;
-    font-size: 24px;
+    padding: 30px 50px;
+    font-size: 48px;
     cursor: pointer;
     text-align: center;
     text-decoration: none;
