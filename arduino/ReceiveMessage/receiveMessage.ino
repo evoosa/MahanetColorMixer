@@ -10,6 +10,8 @@
 #include <WebSocketClient.h>
 #include <cstdlib>
 #include <string>
+#include <iostream>
+using namespace std;
 
 
 // Constants Definitions
@@ -28,7 +30,6 @@ char SERVER_IP[] = "10.100.102.7";
 #define PUMP1 D13
 #define PUMP2 D14
 #define PUMP3 D15
-#endif
 
 int PUMP_PINS[3] = { D13, D14, D15 };
 int PUMP_DELAY_TIME = 2;
@@ -37,10 +38,14 @@ int PUMP_DELAY_TIME = 2;
 ESP8266WebServer server(PORT);
 // Connect to WS server on port WS_PORT
 WebSocketClient webSocketClient;
+// Use WiFiClient class to create TCP connections
+WiFiClient client;
 
 // Run pump
-void runPump(pump_pin, pump_time) {
-    webSocketClient.sendData("[ !!! ] pump '" + std::to_string(pump_pin) + "' is ON for " + std::to_string(pump_time) + " ms");
+void runPump(int pump_pin, int pump_time) {
+    String str_pump_pin = String(pump_pin);
+    String str_pump_time = String(pump_time);
+    webSocketClient.sendData("[ !!! ] pump '" + str_pump_pin + "' is ON for " + str_pump_time + " ms");
 
     //digitalWrite(pump_pin, HIGH);
     //delay(pump_time);
@@ -52,12 +57,15 @@ void runPump(pump_pin, pump_time) {
 //      Handle redirections         //
 
 // Handle Drink / Cocktail redirections
-void makeDrink(pump_times) {
+
+// Handle messages from the server, and make the drink
+void handleMessage() {
+    webSocketClient.sendData("[ !!! ] got message: " + server.args());
     webSocketClient.sendData("[ !!! ] making drink...");
     for ( int i = 0; i < 4; i++ ) {
-        pump_pin = PUMP_PINS[i];
-        int pump_time = std::atoi (server.arg(i));
-        run_pump(pump_pin, pump_time);
+        int pump_pin = PUMP_PINS[i];
+        int pump_time = server.arg(i).toInt();
+        runPump(pump_pin, pump_time);
         delay(PUMP_DELAY_TIME);
     }
 
@@ -65,14 +73,8 @@ void makeDrink(pump_times) {
 
     // tell server everything is damn FINE
     server.send(200, "text/plain", message);
-}
+    }
 
-// Handle messages from the server
-void handleMessage() {
-    pump_times = server.args();
-    webSocketClient.sendData("[ !!! ] got message: " + pump_times);
-    makeDrink(pump_times)
-}
 
 // Handle the '/' redirection
 void handleRoot() {
@@ -109,16 +111,26 @@ void setup(void) {
 
     // Initialize handles for the redirections
     server.on("/", handleRoot);
-    server.on("/handle_drink", handleMessage);
+    server.on("/drink", handleMessage);
     server.onNotFound(handleNotFound);
 
     // Start the WebServer !
     server.begin();
     Serial.println("HTTP server started");
 
-    // connect to the server's ws
-    webSocketClient.path = path;
-    webSocketClient.host = host;
+    // Connect to the websocket server
+    if (client.connect(SERVER_IP, PORT)) {
+      Serial.println("Connected");
+    } else {
+      Serial.println("Connection failed.");
+      while(1) {
+        // Hang on failure
+      }
+    }
+
+    // handshake with the ws server
+    webSocketClient.path = WS_PATH;
+    webSocketClient.host = SERVER_IP;
     if (webSocketClient.handshake(client)) {
         webSocketClient.sendData("Handshake successful");
     }

@@ -34,7 +34,14 @@ class getCocktail(tornado.web.RequestHandler):
         self.render("{}/get_cocktail.html".format(STATIC_DIRNAME))
 
 
-# ---- WS Handlers ---- #
+# ---- Logs from arduino handler ---- #
+
+class getMsg(tornado.web.RequestHandler):
+    def get(self):
+        msg = self.get_argument('msg', 'NO_ARG_WTF', True)
+        print(msg)
+
+# ---- WS Handler ---- #
 
 class wsMessageHandler(tornado.websocket.WebSocketHandler):
     def check_origin(self, origin):
@@ -50,19 +57,6 @@ class wsMessageHandler(tornado.websocket.WebSocketHandler):
         else:
             print(ERROR_WTF_MSG, activeCount())
 
-class wsArduinoHandler(tornado.websocket.WebSocketHandler):
-    def check_origin(self, origin):
-        return True
-
-    def open(self):
-        print("Connected To Arduino!")
-
-    def on_message(self, message):
-        print(message)
-
-    def on_close(self):
-        print("WebSocket closed")
-
 
 def make_app():
     settings = {
@@ -72,9 +66,9 @@ def make_app():
     return tornado.web.Application([
         (r"/", getUserChoice),
         (r"/drink_ws", wsMessageHandler),
-        (r"/ard_ws", wsArduinoHandler),
         (r"/mono_drink", getMonoDrink),
-        (r"/cocktail", getCocktail)],
+        (r"/cocktail", getCocktail),
+        (r"/get_msg", getMsg)],
         **settings)
 
 

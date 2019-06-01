@@ -1,4 +1,4 @@
-from urllib import urlopen
+from urllib.request import urlopen
 
 from CocktailMixer.utils.config import ARDUINO_PORT, ARDUINO_IP, HANDLE_DRINK_REDIRECTION
 
