@@ -48,7 +48,7 @@ class wsMessageHandler(tornado.websocket.WebSocketHandler):
         return True
 
     def on_message(self, message):
-        print("Received monoDrink: ", message, '\n')
+        print("Received Drink: ", message, '\n')
         if activeCount() == 1:
             new_thread = printDrink(message)
             new_thread.start()
